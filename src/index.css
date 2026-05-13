@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@theme {
+  /* Neon Colors */
+  --color-neon-orange: #FF5500;
+  --color-neon-orange-light: #FF7733;
+  --color-neon-orange-dark: #CC4400;
+  --color-neon-orange-rgb: 255, 85, 0;
+  --color-neon-cyan: #00E5FF;
+  --color-neon-purple: #A855F7;
+  --color-neon-pink: #EC4899;
+  --color-neon-blue: #00A3FF;
+
+  /* Glass Morphism - Unified */
+  --color-glass-bg: rgba(255, 255, 255, 0.05);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --color-glass-hover: rgba(255, 255, 255, 0.08);
+
+  /* Surface Colors */
+  --color-surface: #0a0a0f;
+  --color-surface-light: #111118;
+
+  /* Opacity Scale - Standardized */
+  --opacity-subtle: 0.02;
+  --opacity-light: 0.04;
+  --opacity-medium: 0.08;
+  --opacity-hover: 0.1;
+  --opacity-focus: 0.15;
+  --opacity-active: 0.2;
+
+  /* Semantic Color Tokens - Neon Palette */
+  --color-success: #10b981;
+  --color-success-light: rgba(16, 185, 129, 0.1);
+  --color-error: #ef4444;
+  --color-error-light: rgba(239, 68, 68, 0.1);
+  --color-warning: #f59e0b;
+  --color-warning-light: rgba(245, 158, 11, 0.1);
+  --color-info: #00a3ff;
+  --color-info-light: rgba(0, 163, 255, 0.1);
+
+  /* Extended Neon Color Variants */
+  --color-neon-orange-10: rgba(255, 85, 0, 0.1);
+  --color-neon-orange-20: rgba(255, 85, 0, 0.2);
+  --color-neon-orange-30: rgba(255, 85, 0, 0.3);
+  --color-neon-cyan-10: rgba(0, 229, 255, 0.1);
+  --color-neon-cyan-20: rgba(0, 229, 255, 0.2);
+  --color-neon-purple-10: rgba(168, 85, 247, 0.1);
+  --color-neon-purple-20: rgba(168, 85, 247, 0.2);
+
+  /* Font Families */
+  --font-orbitron: "Orbitron", sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --font-tajawal: "Tajawal", sans-serif;
+  --font-code: "Monaco", "Courier New", monospace;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--color-neon-orange-rgb), 0.3) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(var(--color-neon-orange-rgb), 0.3);
+  border-radius: 3px;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-inter);
+  background: #000000;
+  color: #ffffff;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+
+[dir="rtl"] body {
+  font-family: var(--font-tajawal);
+}
+
+#root {
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+@keyframes pulse-neon {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px var(--color-neon-orange), 0 0 10px var(--color-neon-orange); }
+  50% { box-shadow: 0 0 10px var(--color-neon-orange), 0 0 20px var(--color-neon-orange), 0 0 30px var(--color-neon-orange); }
+}
+
+@keyframes float-xo {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.08; }
+  90% { opacity: 0.08; }
+  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.glass {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-glass-border);
+}
+
+.neon-text {
+  text-shadow: 0 0 10px var(--color-neon-orange), 0 0 20px var(--color-neon-orange);
+}
+
+.neon-text-orange {
+  text-shadow: 0 0 10px var(--color-neon-orange), 0 0 20px var(--color-neon-orange), 0 0 40px var(--color-neon-orange);
+}

@@ -1,0 +1,20 @@
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_FIREBASE_API_KEY?: string;
+  readonly VITE_FIREBASE_AUTH_DOMAIN?: string;
+  readonly VITE_FIREBASE_PROJECT_ID?: string;
+  readonly VITE_FIREBASE_STORAGE_BUCKET?: string;
+  readonly VITE_FIREBASE_MESSAGING_SENDER_ID?: string;
+  readonly VITE_FIREBASE_APP_ID?: string;
+  readonly VITE_FIREBASE_MEASUREMENT_ID?: string;
+  readonly VITE_ADMIN_EMAIL?: string;
+  readonly VITE_ADMIN_PASSWORD?: string;
+  readonly VITE_ADMIN_PIN_HASH?: string;
+  /** Set to `true` after deploying the `adminDeleteUserWithCleanup` callable. */
+  readonly VITE_ENABLE_ADMIN_DELETE_USER?: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
