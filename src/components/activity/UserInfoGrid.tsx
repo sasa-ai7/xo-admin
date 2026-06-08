@@ -15,7 +15,7 @@ interface UserInfoGridProps {
 
 const toneClasses: Record<NonNullable<UserInfoItem['tone']>, string> = {
   default: '',
-  accent: 'border-neon-orange/25 bg-neon-orange/10',
+  accent: 'border-xo-cyan/25 bg-xo-cyan/10',
   warning: 'border-amber-400/30 bg-amber-500/10',
 };
 

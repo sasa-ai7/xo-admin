@@ -59,16 +59,16 @@ export function DataTable<T extends Record<string, unknown>>({
   }
 
   return (
-    <div className={cn('w-full max-w-full min-w-0 overflow-x-auto', className)}>
+    <div className={cn('w-full max-w-full min-w-0 overflow-x-auto rounded-[1.1rem] border border-xo-border/60', className)}>
       <table className="min-w-[640px] w-full text-sm">
         <thead>
-          <tr className="border-b border-glass-border">
+          <tr className="sticky top-0 border-b border-xo-border bg-xo-panel-hover/95 backdrop-blur-xl">
             {columns.map((col) => (
               <th
                 key={col.key}
                 className={cn(
-                  'px-4 py-3 text-left font-medium text-gray-400 whitespace-nowrap',
-                  col.sortable && 'cursor-pointer select-none hover:text-neon-blue',
+                  'px-4 py-3 text-left font-medium text-xo-muted whitespace-nowrap',
+                  col.sortable && 'cursor-pointer select-none hover:text-xo-cyan',
                   col.className
                 )}
                 onClick={() => col.sortable && handleSort(col.key)}
@@ -88,13 +88,13 @@ export function DataTable<T extends Record<string, unknown>>({
             <tr
               key={i}
               className={cn(
-                'border-b border-glass-border/50 transition-colors',
-                onRowClick && 'cursor-pointer hover:bg-glass-hover'
+                'border-b border-xo-border/45 transition-colors last:border-b-0',
+                onRowClick && 'cursor-pointer hover:bg-xo-panel-hover/70'
               )}
               onClick={() => onRowClick?.(item)}
             >
               {columns.map((col) => (
-                <td key={col.key} className={cn('px-4 py-3 whitespace-nowrap', col.className)}>
+                <td key={col.key} className={cn('px-4 py-3 whitespace-nowrap text-xo-text/90', col.className)}>
                   {col.render
                     ? col.render(item)
                     : String(item[col.key] ?? '—')}

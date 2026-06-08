@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { RotateCw } from 'lucide-react';
+import { IconBadge } from './IconBadge';
 
 interface RefreshButtonProps {
   onRefresh?: () => void | Promise<void>;
@@ -27,26 +28,15 @@ export function RefreshButton({ onRefresh, className = '' }: RefreshButtonProps)
       title="Refresh"
       className={[
         'group relative flex h-8 w-8 items-center justify-center rounded-full',
-        'border border-neon-orange/30 bg-black/40 backdrop-blur-sm',
-        'text-neon-orange/60 transition-all duration-300',
-        'hover:border-neon-orange/70 hover:bg-neon-orange/10 hover:text-neon-orange',
-        'hover:shadow-[0_0_14px_rgba(255,85,0,0.35)]',
+        'border border-xo-border bg-xo-panel/70 backdrop-blur-sm',
+        'text-xo-cyan/75 transition-all duration-300',
+        'hover:border-xo-border-active hover:bg-xo-cyan/10 hover:text-xo-cyan',
+        'hover:shadow-[0_0_18px_rgba(85,214,255,0.24)]',
         'active:scale-90',
         className,
       ].join(' ')}
     >
-      {/* Outer glow ring – pulses once when spinning */}
-      <span
-        className={[
-          'absolute inset-0 rounded-full border border-neon-orange/40 transition-opacity duration-300',
-          spinning ? 'animate-ping opacity-60' : 'opacity-0 group-hover:opacity-40',
-        ].join(' ')}
-      />
-      <RotateCw
-        size={14}
-        strokeWidth={2.5}
-        className={spinning ? 'animate-spin' : 'transition-transform duration-300 group-hover:rotate-45'}
-      />
+      <IconBadge icon={RotateCw} variant="active" size="xs" glow={false} pulse={spinning} className="border-0 bg-transparent shadow-none" iconClassName={spinning ? 'animate-spin' : 'transition-transform duration-300 group-hover:rotate-45'} />
     </button>
   );
 }

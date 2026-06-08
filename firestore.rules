@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null &&
+        request.auth.token.email == "adminarena77@gmail.com";
+    }
+
+    match /users/{uid} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+      match /{sub=**} {
+        allow read: if isAdmin();
+      }
+    }
+
+    match /purchase_orders/{docId} {
+      // Only written by Cloud Functions / Flutter purchase flow — never by admin UI
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /audit_logs/{docId} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /user_logs/{docId} {
+      allow read: if isAdmin();
+    }
+
+    match /admin_watchlists/{docId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /iap_transactions/{docId} {
+      allow read: if isAdmin();
+    }
+
+    match /deleted_accounts/{docId} {
+      allow read: if isAdmin();
+    }
+
+    match /deletion_requests/{docId} {
+      allow read: if isAdmin();
+    }
+
+    match /deletion_feedback/{docId} {
+      allow read: if isAdmin();
+    }
+
+    match /room_archives/{docId} {
+      allow read: if isAdmin();
+    }
+
+    match /referral_codes/{docId} {
+      allow read: if isAdmin();
+    }
+
+    match /referrals/{docId} {
+      allow read: if isAdmin();
+    }
+
+    match /pending_referral_rewards/{docId} {
+      allow read: if isAdmin();
+    }
+  }
+}

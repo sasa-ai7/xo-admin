@@ -11,8 +11,8 @@ export function GlassCard({ children, className, hover = false }: GlassCardProps
   return (
     <div
       className={cn(
-        'rounded-2xl border border-glass-border bg-glass-bg backdrop-blur-xl',
-        hover && 'transition-all duration-300 hover:bg-glass-hover hover:border-neon-orange/30',
+        'xo-card relative overflow-hidden',
+        hover && 'xo-card-interactive',
         className
       )}
     >

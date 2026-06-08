@@ -3,15 +3,19 @@ import type { ReactNode, ButtonHTMLAttributes } from 'react';
 
 interface NeonButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: 'blue' | 'cyan' | 'purple' | 'red';
+  variant?: 'primary' | 'blue' | 'cyan' | 'purple' | 'red' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
 }
 
 const variantStyles = {
-  blue: 'border-neon-blue/50 text-neon-blue hover:bg-neon-blue/10 hover:shadow-[0_0_15px_rgba(0,163,255,0.3)]',
-  cyan: 'border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10 hover:shadow-[0_0_15px_rgba(0,229,255,0.3)]',
-  purple: 'border-neon-purple/50 text-neon-purple hover:bg-neon-purple/10 hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]',
-  red: 'border-red-500/50 text-red-400 hover:bg-red-500/10 hover:shadow-[0_0_15px_rgba(239,68,68,0.3)]',
+  // Filled gradient primary — the single high-emphasis action style.
+  primary:
+    'border-transparent bg-gradient-to-r from-xo-cyan via-xo-sky to-xo-blue text-xo-bg-deep font-semibold shadow-[0_0_20px_rgba(85,214,255,0.28)] hover:shadow-[0_0_28px_rgba(85,214,255,0.42)]',
+  blue: 'border-xo-sky/50 text-xo-sky hover:bg-xo-sky/10 hover:shadow-[0_0_18px_rgba(56,189,248,0.28)]',
+  cyan: 'border-xo-cyan/50 text-xo-cyan hover:bg-xo-cyan/10 hover:shadow-[0_0_18px_rgba(85,214,255,0.3)]',
+  purple: 'border-xo-purple/50 text-xo-purple hover:bg-xo-purple/10 hover:shadow-[0_0_18px_rgba(167,139,250,0.24)]',
+  red: 'border-xo-danger/50 text-xo-danger hover:bg-xo-danger/10 hover:shadow-[0_0_18px_rgba(251,113,133,0.24)]',
+  ghost: 'border-transparent text-xo-muted hover:bg-white/5 hover:text-xo-text',
 };
 
 const sizeStyles = {
@@ -31,7 +35,7 @@ export function NeonButton({
   return (
     <button
       className={cn(
-        'rounded-lg border font-medium transition-all duration-300',
+        'rounded-xl border bg-xo-panel/60 font-medium backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5',
         'disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none',
         variantStyles[variant],
         sizeStyles[size],

@@ -34,14 +34,14 @@ function KeyButton({
 
   const variants: Record<string, string> = {
     digit:
-      'border border-orange-500/15 bg-gradient-to-b from-white/[0.04] to-transparent text-orange-100 hover:border-orange-400/40 hover:bg-orange-500/10 hover:text-white hover:shadow-[0_0_18px_rgba(255,120,30,0.2)] active:scale-[0.92] active:bg-orange-500/15',
+      'border border-xo-border bg-gradient-to-b from-white/[0.04] to-transparent text-xo-text hover:border-xo-border-active hover:bg-xo-cyan/10 hover:text-white hover:shadow-[0_0_18px_rgba(85,214,255,0.2)] active:scale-[0.92] active:bg-xo-cyan/15',
     action:
       'border border-red-500/15 bg-gradient-to-b from-white/[0.03] to-transparent text-gray-400 hover:border-red-400/40 hover:bg-red-500/10 hover:text-red-300 hover:shadow-[0_0_14px_rgba(255,60,60,0.15)] active:scale-[0.92]',
     submit: cn(
-      'border bg-gradient-to-b text-orange-200 active:scale-[0.92]',
+      'border bg-gradient-to-b text-xo-cyan active:scale-[0.92]',
       glow
-        ? 'border-orange-400/50 from-orange-500/20 to-orange-600/10 shadow-[0_0_24px_rgba(255,120,30,0.3)] hover:shadow-[0_0_32px_rgba(255,120,30,0.5)] hover:from-orange-500/30'
-        : 'border-orange-500/10 from-white/[0.02] to-transparent opacity-30 pointer-events-none'
+        ? 'border-xo-cyan/50 from-xo-cyan/20 to-xo-blue/10 shadow-[0_0_24px_rgba(85,214,255,0.28)] hover:shadow-[0_0_32px_rgba(85,214,255,0.45)] hover:from-xo-cyan/30'
+        : 'border-xo-border/50 from-white/[0.02] to-transparent opacity-30 pointer-events-none'
     ),
   };
 
@@ -58,8 +58,8 @@ function KeyButton({
         style={{
           background:
             variant === 'submit' && glow
-              ? 'linear-gradient(90deg, transparent, rgba(255,160,60,0.6), transparent)'
-              : 'linear-gradient(90deg, transparent, rgba(255,160,60,0.15), transparent)',
+              ? 'linear-gradient(90deg, transparent, rgba(85,214,255,0.6), transparent)'
+              : 'linear-gradient(90deg, transparent, rgba(85,214,255,0.15), transparent)',
         }}
       />
       {/* Glass reflection */}
@@ -84,18 +84,12 @@ export function PremiumKeypad({
   return (
     <div className="flex flex-col items-center gap-5">
       {/* Keypad housing / futuristic shell */}
-      <div
-        className="relative rounded-2xl border border-orange-500/10 bg-black/40 p-5 backdrop-blur-md"
-        style={{
-          boxShadow:
-            '0 0 40px rgba(255,85,0,0.06), inset 0 1px 0 rgba(255,160,60,0.08), 0 20px 60px rgba(0,0,0,0.5)',
-        }}
-      >
+      <div className="xo-bezel relative rounded-2xl p-5">
         {/* Corner accents */}
-        <div className="pointer-events-none absolute left-0 top-0 h-8 w-8 rounded-tl-2xl border-l-2 border-t-2 border-orange-500/25" />
-        <div className="pointer-events-none absolute right-0 top-0 h-8 w-8 rounded-tr-2xl border-r-2 border-t-2 border-orange-500/25" />
-        <div className="pointer-events-none absolute bottom-0 left-0 h-8 w-8 rounded-bl-2xl border-b-2 border-l-2 border-orange-500/25" />
-        <div className="pointer-events-none absolute bottom-0 right-0 h-8 w-8 rounded-br-2xl border-b-2 border-r-2 border-orange-500/25" />
+        <div className="pointer-events-none absolute left-0 top-0 h-8 w-8 rounded-tl-2xl border-l-2 border-t-2 border-xo-cyan/25" />
+        <div className="pointer-events-none absolute right-0 top-0 h-8 w-8 rounded-tr-2xl border-r-2 border-t-2 border-xo-cyan/25" />
+        <div className="pointer-events-none absolute bottom-0 left-0 h-8 w-8 rounded-bl-2xl border-b-2 border-l-2 border-xo-cyan/25" />
+        <div className="pointer-events-none absolute bottom-0 right-0 h-8 w-8 rounded-br-2xl border-b-2 border-r-2 border-xo-cyan/25" />
 
         {/* Rows 1-2-3, 4-5-6, 7-8-9 */}
         <div className="flex flex-col gap-3">
@@ -115,7 +109,7 @@ export function PremiumKeypad({
           {/* Bottom row: Delete, 0, Submit */}
           <div className="flex gap-3">
             <KeyButton
-              label={<Delete size={18} className="text-orange-300/70" />}
+              label={<Delete size={18} className="text-xo-danger/70" />}
               onClick={onDelete}
               disabled={disabled}
               variant="action"
@@ -126,7 +120,7 @@ export function PremiumKeypad({
               disabled={disabled}
             />
             <KeyButton
-              label={<LogIn size={18} className="text-orange-200" />}
+              label={<LogIn size={18} className="text-xo-cyan" />}
               onClick={onSubmit}
               disabled={disabled || pinLength < 1}
               variant="submit"

@@ -24,8 +24,26 @@ const DeletedAccountsPage = lazy(() =>
 const WatchlistPage = lazy(() =>
   import('./components/watchlist/WatchlistPage').then((m) => ({ default: m.WatchlistPage }))
 );
+const WatchlistFolderPage = lazy(() =>
+  import('./components/watchlist/WatchlistFolderPage').then((m) => ({ default: m.WatchlistFolderPage }))
+);
 const LiveRadarPage = lazy(() =>
   import('./components/radar/LiveRadarPage').then((m) => ({ default: m.LiveRadarPage }))
+);
+const ArenaRoomsPage = lazy(() =>
+  import('./components/arena/ArenaRoomsPage').then((m) => ({ default: m.ArenaRoomsPage }))
+);
+const RoomLogsPage = lazy(() =>
+  import('./components/roomLogs/RoomLogsPage').then((m) => ({ default: m.RoomLogsPage }))
+);
+const ReferralsPage = lazy(() =>
+  import('./components/referrals/ReferralsPage').then((m) => ({ default: m.ReferralsPage }))
+);
+const SettingsPage = lazy(() =>
+  import('./components/settings/SettingsPage').then((m) => ({ default: m.SettingsPage }))
+);
+const PurchaseOrdersPage = lazy(() =>
+  import('./components/purchases/PurchaseOrdersPage').then((m) => ({ default: m.PurchaseOrdersPage }))
 );
 
 function PageLoader() {
@@ -109,10 +127,58 @@ function AppContent() {
             }
           />
           <Route
+            path="watchlist/:folderId"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <WatchlistFolderPage />
+              </Suspense>
+            }
+          />
+          <Route
             path="radar"
             element={
               <Suspense fallback={<PageLoader />}>
                 <LiveRadarPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="arena-rooms"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <ArenaRoomsPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="room-logs"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <RoomLogsPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="referrals"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <ReferralsPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="purchase-orders"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <PurchaseOrdersPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="settings"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <SettingsPage />
               </Suspense>
             }
           />

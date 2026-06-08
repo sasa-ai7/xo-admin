@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { ShieldCheck, Lock } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { XOKingsLogo } from './PulsingLogo';
+import { XOArenaLogo } from './PulsingLogo';
 import { PremiumKeypad } from './CircularKeypad';
 import { LockoutOverlay } from './LockoutOverlay';
 
@@ -91,10 +92,10 @@ export function LoginScreen() {
         ctx.rotate(s.rotation);
 
         if (s.type === 'X') {
-          ctx.strokeStyle = `rgba(255, 85, 0, ${opacity})`;
+          ctx.strokeStyle = `rgba(85, 214, 255, ${opacity})`;
           ctx.lineWidth = 2;
           ctx.lineCap = 'round';
-          ctx.shadowColor = 'rgba(255, 85, 0, 0.3)';
+          ctx.shadowColor = 'rgba(85, 214, 255, 0.3)';
           ctx.shadowBlur = 8;
           const half = s.size / 2;
           ctx.beginPath();
@@ -104,9 +105,9 @@ export function LoginScreen() {
           ctx.lineTo(-half, half);
           ctx.stroke();
         } else {
-          ctx.strokeStyle = `rgba(255, 140, 26, ${opacity})`;
+          ctx.strokeStyle = `rgba(56, 189, 248, ${opacity})`;
           ctx.lineWidth = 2;
-          ctx.shadowColor = 'rgba(255, 140, 26, 0.3)';
+          ctx.shadowColor = 'rgba(56, 189, 248, 0.3)';
           ctx.shadowBlur = 8;
           ctx.beginPath();
           ctx.arc(0, 0, s.size / 2, 0, Math.PI * 2);
@@ -151,25 +152,17 @@ export function LoginScreen() {
   }, []);
 
   return (
-    <div className="relative flex min-h-dvh w-full overflow-hidden bg-[#07060b]">
+    <div className="relative flex min-h-dvh w-full overflow-hidden bg-gradient-to-br from-xo-bg-deep via-xo-bg to-xo-bg-soft">
       {/* ── Background layers ── */}
-      {/* Ambient image – the XO Kings hero art */}
-      <div
-        className="pointer-events-none absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: 'url(/xo-kings-bg.png)',
-          filter: 'brightness(0.35) saturate(1.2)',
-        }}
-      />
       {/* Floating XO symbols canvas */}
       <canvas
         ref={canvasRef}
         className="pointer-events-none absolute inset-0 z-[1]"
       />
-      {/* Radial orange ambient glow */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_60%_30%,rgba(255,120,30,0.12)_0%,transparent_70%)]" />
-      {/* Bottom-left warm wash */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_90%,rgba(255,85,0,0.08)_0%,transparent_60%)]" />
+      {/* Radial cyan ambient glow */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_60%_30%,rgba(85,214,255,0.14)_0%,transparent_70%)]" />
+      {/* Bottom-left sky wash */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_90%,rgba(56,189,248,0.1)_0%,transparent_60%)]" />
       {/* Vignette */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.7)_100%)]" />
       {/* Subtle grid overlay for futuristic feel */}
@@ -177,72 +170,65 @@ export function LoginScreen() {
         className="pointer-events-none absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(255,120,30,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,120,30,0.3) 1px, transparent 1px)',
+            'linear-gradient(rgba(85,214,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(85,214,255,0.3) 1px, transparent 1px)',
           backgroundSize: '60px 60px',
         }}
       />
 
       {/* ── Main content ── */}
-      <div className="relative z-10 flex w-full flex-col items-center justify-center px-4">
-        {/* XO Kings logo */}
+      <div className="relative z-10 flex w-full flex-col items-center justify-center px-4 py-8">
+        {/* XO Arena logo */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0, y: -30 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
-          <XOKingsLogo />
+          <XOArenaLogo />
         </motion.div>
 
-        {/* Divider line */}
+        {/* Access portal panel — elevated 2.5D glass */}
         <motion.div
-          className="my-6 h-px w-48"
-          style={{
-            background:
-              'linear-gradient(90deg, transparent, rgba(255,120,30,0.5), transparent)',
-          }}
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-        />
-
-        {/* Subtitle */}
-        <motion.p
-          className="mb-2 font-orbitron text-[10px] tracking-[0.4em] text-orange-300/50 uppercase"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
+          className="xo-bezel mt-8 flex w-full max-w-sm flex-col items-stretch rounded-[1.75rem] p-6 sm:p-7"
+          initial={{ opacity: 0, y: 24, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 0.45, duration: 0.6, ease: 'easeOut' }}
         >
-          {t('adminAccess')}
-        </motion.p>
+          {/* Admin Access badge (2.5D) */}
+          <div className="flex justify-center">
+            <span className="xo-bezel inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-orbitron text-[10px] font-bold tracking-[0.32em] text-xo-cyan uppercase">
+              <ShieldCheck size={12} className="text-xo-cyan" />
+              {t('adminAccess')}
+            </span>
+          </div>
+
+          {/* Divider line */}
+          <motion.div
+            className="mx-auto my-5 h-px w-40"
+            style={{
+              background:
+                'linear-gradient(90deg, transparent, rgba(85,214,255,0.55), transparent)',
+            }}
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          />
 
         {/* Password field */}
         <motion.div
-          className="relative mb-1 mt-4 w-full max-w-sm px-1 sm:px-0"
+          className="relative mb-1 w-full max-w-sm px-1 sm:px-0"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
         >
           <div
-            className="flex h-12 items-center rounded-xl border border-orange-500/20 bg-black/50 px-4 backdrop-blur-md"
+            className="flex h-12 items-center rounded-xl border border-xo-border bg-xo-panel/70 px-4 backdrop-blur-md"
             style={{
               boxShadow:
-                'inset 0 1px 0 rgba(255,160,60,0.06), 0 0 20px rgba(255,85,0,0.05)',
+                'inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(85,214,255,0.08)',
             }}
           >
-            <svg
-              className="mr-3 h-4 w-4 text-orange-400/50"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
-            </svg>
-            <div className="flex flex-1 items-center gap-0.5 font-orbitron text-lg tracking-[0.35em] text-orange-200">
+            <Lock size={16} className="me-3 text-xo-cyan/60" />
+            <div className="flex flex-1 items-center gap-0.5 font-orbitron text-lg tracking-[0.35em] text-xo-text">
               {pinInput
                 ? '\u25CF'.repeat(pinInput.length)
                 : ''}
@@ -253,7 +239,7 @@ export function LoginScreen() {
               )}
               {pinInput && (
                 <motion.span
-                  className="ml-0.5 inline-block h-5 w-[2px] bg-orange-400"
+                  className="ml-0.5 inline-block h-5 w-[2px] bg-xo-cyan"
                   animate={{ opacity: [1, 0, 1] }}
                   transition={{ duration: 1, repeat: Infinity }}
                 />
@@ -291,6 +277,18 @@ export function LoginScreen() {
             />
           )}
         </motion.div>
+        </motion.div>
+
+        {/* Secure portal tag */}
+        <motion.p
+          className="mt-5 inline-flex items-center gap-1.5 font-orbitron text-[9px] tracking-[0.3em] text-xo-muted/70 uppercase"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9 }}
+        >
+          <ShieldCheck size={10} className="text-xo-cyan/50" />
+          {t('securePortal')} · XO ARENA
+        </motion.p>
       </div>
     </div>
   );

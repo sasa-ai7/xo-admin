@@ -29,8 +29,12 @@ export function DataTableTanStack<T>({
   pageSize = 20,
   emptyMessage = 'No data available',
 }: DataTableTanStackProps<T>) {
+  'use no memo';
+
   const [sorting, setSorting] = useState<SortingState>([]);
 
+  // TanStack Table intentionally returns imperative helpers; keep it out of React Compiler memoization.
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,
@@ -57,7 +61,7 @@ export function DataTableTanStack<T>({
                     key={header.id}
                     className={cn(
                       'px-4 py-3 text-start font-orbitron text-[11px] font-semibold uppercase tracking-wider text-gray-500',
-                      header.column.getCanSort() && 'cursor-pointer select-none hover:text-neon-orange'
+                      header.column.getCanSort() && 'cursor-pointer select-none hover:text-xo-cyan'
                     )}
                     onClick={header.column.getToggleSortingHandler()}
                   >
@@ -88,7 +92,7 @@ export function DataTableTanStack<T>({
                   className={cn(
                     'border-b border-glass-border/50 transition-colors',
                     onRowClick
-                      ? 'cursor-pointer hover:bg-neon-orange/5'
+                      ? 'cursor-pointer hover:bg-xo-cyan/5'
                       : 'hover:bg-glass-hover'
                   )}
                   onClick={() => onRowClick?.(row.original)}

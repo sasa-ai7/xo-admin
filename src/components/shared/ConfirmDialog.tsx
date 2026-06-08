@@ -60,7 +60,7 @@ export function ConfirmDialog({
                   className={`rounded-xl px-5 py-2 text-xs font-bold transition-all ${
                     destructive
                       ? 'bg-red-500/15 text-red-400 hover:bg-red-500/25'
-                      : 'bg-neon-orange/15 text-neon-orange hover:bg-neon-orange/25'
+                      : 'bg-xo-cyan/15 text-xo-cyan hover:bg-xo-cyan/25'
                   }`}
                 >
                   {confirmLabel || t('confirm')}

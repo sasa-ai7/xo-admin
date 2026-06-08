@@ -1,26 +1,52 @@
 import type { LucideIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { cn } from '../../utils/cn';
+import { IconBadge, type IconBadgeVariant } from './IconBadge';
+import { AnimatedNumber } from './AnimatedNumber';
 
 interface StatCardProps {
   icon: LucideIcon;
   label: string;
   value: string | number;
+  /** Optional small helper line under the label. */
+  hint?: ReactNode;
   trend?: { value: number; positive: boolean };
+  variant?: IconBadgeVariant;
+  /** Custom formatter applied when value is a number (and animated). */
+  format?: (n: number) => string;
+  /** Disable the count-up animation for numeric values. */
+  animate?: boolean;
+  onClick?: () => void;
   className?: string;
 }
 
-export function StatCard({ icon: Icon, label, value, trend, className }: StatCardProps) {
+export function StatCard({
+  icon: Icon,
+  label,
+  value,
+  hint,
+  trend,
+  variant = 'active',
+  format,
+  animate = true,
+  onClick,
+  className,
+}: StatCardProps) {
+  const Tag = onClick ? 'button' : 'div';
+  const numeric = typeof value === 'number';
+
   return (
-    <div
+    <Tag
+      type={onClick ? 'button' : undefined}
+      onClick={onClick}
       className={cn(
-        'rounded-2xl border border-glass-border bg-glass-bg p-5 backdrop-blur-xl transition-all duration-300 hover:border-neon-orange/20 hover:shadow-[0_0_20px_rgba(255,85,0,0.05)]',
+        'xo-card xo-card-interactive xo-rim group p-5 text-start',
+        onClick && 'cursor-pointer',
         className
       )}
     >
       <div className="flex items-start justify-between">
-        <div className="rounded-xl bg-neon-orange/10 p-2.5">
-          <Icon size={20} className="text-neon-orange" />
-        </div>
+        <IconBadge icon={Icon} variant={variant} size="md" hex glow />
         {trend && (
           <span
             className={cn(
@@ -34,8 +60,17 @@ export function StatCard({ icon: Icon, label, value, trend, className }: StatCar
           </span>
         )}
       </div>
-      <p className="mt-4 font-orbitron text-2xl font-bold text-white">{value}</p>
-      <p className="mt-1 text-xs text-gray-500">{label}</p>
-    </div>
+      <p className="mt-4 font-orbitron text-2xl font-bold tabular-nums text-xo-text">
+        {numeric && animate ? (
+          <AnimatedNumber value={value} format={format} />
+        ) : numeric && format ? (
+          format(value)
+        ) : (
+          value
+        )}
+      </p>
+      <p className="mt-1 text-xs text-xo-muted">{label}</p>
+      {hint ? <p className="mt-1 text-[11px] text-xo-muted/70">{hint}</p> : null}
+    </Tag>
   );
 }

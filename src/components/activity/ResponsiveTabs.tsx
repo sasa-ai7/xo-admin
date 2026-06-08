@@ -1,3 +1,5 @@
+import { useId } from 'react';
+import { motion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
@@ -20,6 +22,10 @@ export function ResponsiveTabs<T extends string>({
   onChange,
   className,
 }: ResponsiveTabsProps<T>) {
+  // Unique layout group id so multiple tab bars on one page don't share the
+  // sliding indicator.
+  const groupId = useId();
+
   return (
     <div className={cn('max-w-full min-w-0', className)}>
       <div className="flex max-w-full items-center gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -33,12 +39,19 @@ export function ResponsiveTabs<T extends string>({
               type="button"
               onClick={() => onChange(tab.value)}
               className={cn(
-                'flex min-h-10 shrink-0 items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-semibold whitespace-nowrap transition-all duration-200 sm:px-4',
+                'relative flex min-h-10 shrink-0 items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-semibold whitespace-nowrap transition-colors duration-200 sm:px-4',
                 isActive
-                  ? 'border-neon-orange bg-neon-orange text-black shadow-[0_0_15px_rgba(255,85,0,0.24)]'
-                  : 'border-neon-orange/10 bg-black/30 text-gray-300 hover:border-neon-orange/25 hover:text-white'
+                  ? 'border-xo-cyan/60 text-xo-bg-deep'
+                  : 'border-xo-cyan/10 bg-black/30 text-gray-300 hover:border-xo-cyan/25 hover:text-white'
               )}
             >
+              {isActive && (
+                <motion.span
+                  layoutId={`tab-active-${groupId}`}
+                  transition={{ type: 'spring', bounce: 0.18, duration: 0.4 }}
+                  className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-xo-cyan via-xo-sky to-xo-blue shadow-[0_0_16px_rgba(85,214,255,0.28)]"
+                />
+              )}
               {Icon ? <Icon size={13} className="shrink-0" /> : null}
               <span>{tab.label}</span>
             </button>

@@ -12,6 +12,8 @@ import type { UserLog } from '../types/userLog';
 import type { UserLogDetails } from '../types/userLog';
 import type { IAPTransaction } from '../types/transaction';
 import type { DeletionFeedback } from '../types/deletionFeedback';
+import type { PurchaseOrder } from '../types/purchaseOrder';
+import { normalizePurchaseOrder, purchaseOrderDisplayTime } from '../types/purchaseOrder';
 import { normalizeAppUser } from '../utils/userNormalizer';
 import { iapTransactionDisplayTime } from '../types/transaction';
 import { firestoreErrCode, subscribeCreatedAtOrFallback } from '../utils/firestoreQueryHelpers';
@@ -29,6 +31,9 @@ interface DataStoreState {
   transactions: IAPTransaction[];
   transactionsLoading: boolean;
   transactionsError: Error | null;
+  purchaseOrders: PurchaseOrder[];
+  purchaseOrdersLoading: boolean;
+  purchaseOrdersError: Error | null;
   deletionFeedback: DeletionFeedback[];
   deletionFeedbackLoading: boolean;
   deletionFeedbackError: Error | null;
@@ -39,6 +44,7 @@ interface DataStoreState {
     userLogs: number;
     auditLogs: number;
     transactions: number;
+    purchaseOrders: number;
     mergedRadarLogs: number;
   };
   startListeners: () => void;
@@ -57,6 +63,9 @@ const initialDataState = {
   transactions: [],
   transactionsLoading: true,
   transactionsError: null,
+  purchaseOrders: [] as PurchaseOrder[],
+  purchaseOrdersLoading: true,
+  purchaseOrdersError: null,
   deletionFeedback: [],
   deletionFeedbackLoading: true,
   deletionFeedbackError: null,
@@ -65,6 +74,7 @@ const initialDataState = {
     userLogs: 0,
     auditLogs: 0,
     transactions: 0,
+    purchaseOrders: 0,
     mergedRadarLogs: 0,
   },
 };
@@ -132,6 +142,15 @@ function mergeLogStreams(userLogs: UserLog[], auditLogs: UserLog[]): UserLog[] {
     .slice(0, 200);
 }
 
+function poSortMs(order: PurchaseOrder): number {
+  return getTimestampMs(purchaseOrderDisplayTime(order));
+}
+
+function mapPoDoc(doc: QueryDocumentSnapshot<DocumentData>): PurchaseOrder {
+  const data = doc.data() as Record<string, unknown>;
+  return normalizePurchaseOrder(doc.id, data);
+}
+
 function mapTxDoc(doc: QueryDocumentSnapshot<DocumentData>): IAPTransaction {
   const data = doc.data();
   return {
@@ -166,6 +185,8 @@ export const useDataStore = create<DataStoreState>((set, get) => ({
       auditLogsError: null,
       transactionsLoading: true,
       transactionsError: null,
+      purchaseOrdersLoading: true,
+      purchaseOrdersError: null,
       deletionFeedbackLoading: true,
       deletionFeedbackError: null,
     });
@@ -332,6 +353,45 @@ export const useDataStore = create<DataStoreState>((set, get) => ({
           set({
             transactionsError: err instanceof Error ? err : new Error(String(err)),
             transactionsLoading: false,
+          });
+        },
+      }),
+
+      subscribeCreatedAtOrFallback<PurchaseOrder>(db, COLLECTIONS.purchaseOrders, {
+        limitN: 500,
+        label: 'purchase_orders',
+        mapDocs: (docs) => {
+          const rows = docs.map((d) => mapPoDoc(d));
+          rows.sort((a, b) => poSortMs(b) - poSortMs(a));
+          return rows.slice(0, 500);
+        },
+        onUpdate: (rows, info) => {
+          if (import.meta.env.DEV) {
+            console.info(`[PurchaseOrders] snapshot size=${info.size} mode=${info.mode}`);
+          }
+          set((state) => ({
+            purchaseOrders: rows,
+            purchaseOrdersLoading: false,
+            purchaseOrdersError: null,
+            debugSnapshotSizes: {
+              ...state.debugSnapshotSizes,
+              purchaseOrders: rows.length,
+            },
+          }));
+        },
+        onPermissionDenied: (err) => {
+          console.error(`[Firestore] purchase_orders read failed: permission-denied`, err);
+          set({
+            purchaseOrdersError:
+              err instanceof Error ? err : new Error('purchase_orders: permission-denied'),
+            purchaseOrdersLoading: false,
+          });
+        },
+        onFatalError: (err) => {
+          console.error(`[PurchaseOrders] read failed: ${firestoreErrCode(err)}`, err);
+          set({
+            purchaseOrdersError: err instanceof Error ? err : new Error(String(err)),
+            purchaseOrdersLoading: false,
           });
         },
       }),

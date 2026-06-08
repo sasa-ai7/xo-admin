@@ -75,15 +75,15 @@ export function CoinAdjustModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <GlassCard className="w-full max-w-md border-neon-orange/20 shadow-[0_0_30px_rgba(255,85,0,0.2)]">
+      <GlassCard className="w-full max-w-md border-xo-cyan/25 shadow-[0_0_30px_rgba(85,214,255,0.18)]">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-neon-orange/10 px-6 py-4">
-          <h3 className="font-orbitron text-lg font-bold text-neon-orange">
+        <div className="flex items-center justify-between border-b border-xo-cyan/10 px-6 py-4">
+          <h3 className="font-orbitron text-lg font-bold text-xo-cyan">
             Manage Coins
           </h3>
           <button
             onClick={handleClose}
-            className="rounded-full p-1.5 transition-all hover:bg-neon-orange/10 hover:text-neon-orange"
+            className="rounded-full p-1.5 transition-all hover:bg-xo-cyan/10 hover:text-xo-cyan"
           >
             <X size={20} />
           </button>
@@ -138,15 +138,15 @@ export function CoinAdjustModal({
                 setError('');
               }}
               placeholder="0"
-              className="w-full rounded-xl border border-glass-border bg-black/40 px-4 py-3 text-white placeholder-gray-600 outline-none transition-colors focus:border-neon-orange/40 focus:shadow-[0_0_10px_rgba(255,85,0,0.08)]"
+              className="w-full rounded-xl border border-xo-border bg-xo-panel/70 px-4 py-3 text-white placeholder-gray-600 outline-none transition-colors focus:border-xo-border-active focus:shadow-[0_0_10px_rgba(85,214,255,0.1)]"
               min="0"
             />
           </div>
 
           {/* Preview */}
-          <div className="rounded-xl border border-neon-orange/10 bg-neon-orange/5 p-4">
+          <div className="rounded-xl border border-xo-cyan/10 bg-xo-cyan/5 p-4">
             <p className="text-xs text-gray-500 uppercase tracking-wider">After Change</p>
-            <p className="mt-2 font-orbitron text-2xl font-bold text-neon-orange">
+            <p className="mt-2 font-orbitron text-2xl font-bold text-xo-cyan">
               {newCoins.toLocaleString()}
             </p>
             {newCoins < 0 && (
@@ -173,7 +173,7 @@ export function CoinAdjustModal({
             <button
               onClick={handleSubmit}
               disabled={loading || !amount || newCoins < 0}
-              className="flex-1 flex items-center justify-center gap-2 rounded-full bg-neon-orange px-4 py-2.5 font-semibold text-black transition-all hover:shadow-[0_0_15px_rgba(255,85,0,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 flex items-center justify-center gap-2 rounded-full bg-xo-cyan px-4 py-2.5 font-semibold text-xo-bg-deep transition-all hover:shadow-[0_0_15px_rgba(85,214,255,0.36)] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>

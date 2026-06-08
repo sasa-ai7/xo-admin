@@ -4,6 +4,8 @@ import { X } from 'lucide-react';
 import { useUIStore } from '../../stores/uiStore';
 import { useFirestoreDoc } from '../../hooks/useFirestoreDoc';
 import { useTransactions } from '../../hooks/useTransactions';
+import { usePurchaseOrdersForUser } from '../../hooks/usePurchaseOrdersForUser';
+import { useWalletLedgerForUser } from '../../hooks/useWalletLedgerForUser';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { UserProfileHeader } from './UserProfileHeader';
 import { StatsGrid } from './StatsGrid';
@@ -18,6 +20,8 @@ export function RadarModal() {
     useUIStore();
   const { data: user, loading } = useFirestoreDoc<AppUser>('users', selectedUserId);
   const { data: userTransactions } = useTransactions(selectedUserEmail || undefined);
+  const { data: purchaseOrders } = usePurchaseOrdersForUser(selectedUserId);
+  const { data: walletLedger } = useWalletLedgerForUser(selectedUserId);
   const [showHistory, setShowHistory] = useState(false);
 
   return (
@@ -70,7 +74,13 @@ export function RadarModal() {
                   </button>
                 </div>
 
-                {showHistory && <CoinHistory transactions={userTransactions} />}
+                {showHistory && (
+                  <CoinHistory
+                    transactions={userTransactions}
+                    purchaseOrders={purchaseOrders}
+                    walletLedger={walletLedger}
+                  />
+                )}
 
                 <AdminActions userId={selectedUserId!} currentCoins={user.Wallet?.coins ?? 0} />
               </div>

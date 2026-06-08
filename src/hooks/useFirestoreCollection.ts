@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { onSnapshot, query, type QueryConstraint, collection } from 'firebase/firestore';
 import { db } from '../firebase/config';
+
+const EMPTY_QUERY_CONSTRAINTS: QueryConstraint[] = [];
 
 interface UseFirestoreCollectionResult<T> {
   data: T[];
@@ -10,32 +12,24 @@ interface UseFirestoreCollectionResult<T> {
 
 export function useFirestoreCollection<T>(
   path: string,
-  constraints: QueryConstraint[] = [],
+  constraints: QueryConstraint[] = EMPTY_QUERY_CONSTRAINTS,
   deps?: unknown[]
 ): UseFirestoreCollectionResult<T> {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const constraintsRef = useRef(constraints);
-  constraintsRef.current = constraints;
-
   const depsKey = deps ? JSON.stringify(deps) : 'static';
 
   useEffect(() => {
     if (!path || path === '__noop__') {
-      setData([]);
-      setLoading(false);
-      setError(null);
       return;
     }
 
     let active = true;
-    setLoading(true);
-    setError(null);
 
     const col = collection(db, path);
-    const c = constraintsRef.current;
+    const c = constraints;
     const q = c.length > 0 ? query(col, ...c) : query(col);
 
     const unsubscribe = onSnapshot(
@@ -60,7 +54,7 @@ export function useFirestoreCollection<T>(
       active = false;
       unsubscribe();
     };
-  }, [path, depsKey]);
+  }, [path, depsKey, constraints]);
 
-  return { data, loading, error };
+  return !path || path === '__noop__' ? { data: [], loading: false, error: null } : { data, loading, error };
 }

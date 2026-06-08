@@ -42,8 +42,8 @@ export function UserListGrid({ users, selectedUid, onUserSelect, loading }: User
             key={user.id}
             className={`overflow-hidden transition-all duration-200 cursor-pointer ${
               isSelected
-                ? 'border-neon-orange/40 bg-neon-orange/[0.08]'
-                : 'hover:border-neon-orange/30'
+                ? 'border-xo-cyan/40 bg-xo-cyan/[0.08]'
+                : 'hover:border-xo-cyan/30'
             }`}
             hover
           >
@@ -54,7 +54,7 @@ export function UserListGrid({ users, selectedUid, onUserSelect, loading }: User
               <div className="flex items-start justify-between gap-3 p-4 sm:p-5 md:p-6">
                 <div className="flex-1 min-w-0">
                   {/* Email */}
-                  <p className="truncate text-xs sm:text-sm font-medium text-neon-orange">
+                  <p className="truncate text-xs sm:text-sm font-medium text-xo-cyan">
                     {user.Profile?.email || 'Unknown'}
                   </p>
 
@@ -87,7 +87,7 @@ export function UserListGrid({ users, selectedUid, onUserSelect, loading }: User
 
                 {/* Selection Indicator */}
                 {isSelected && (
-                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neon-orange">
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-xo-cyan">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="14"

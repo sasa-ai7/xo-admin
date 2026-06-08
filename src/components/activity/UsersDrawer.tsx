@@ -37,7 +37,7 @@ export function UsersDrawer({
       >
         <div className="flex items-start justify-between gap-3 px-3 pb-3">
           <div className="min-w-0">
-            <p className="font-orbitron text-sm font-bold tracking-[0.24em] text-neon-orange">{title}</p>
+            <p className="font-orbitron text-sm font-bold tracking-[0.24em] text-xo-cyan">{title}</p>
             {subtitle ? <p className="mt-1 text-[11px] text-gray-500">{subtitle}</p> : null}
           </div>
           <button

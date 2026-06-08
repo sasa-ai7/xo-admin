@@ -81,4 +81,6 @@ export interface AppUser {
   isPremium?: boolean;
   verified?: boolean;
   watchlisted?: boolean;
+  inviteCode?: string;
+  referralCode?: string;
 }

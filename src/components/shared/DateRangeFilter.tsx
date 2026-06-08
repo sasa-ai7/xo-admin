@@ -101,7 +101,7 @@ export function DateRangeFilter({ value, onChange }: DateRangeFilterProps) {
           className={cn(
             'rounded-lg px-3 py-1.5 text-xs font-medium transition-all',
             value.preset === p.key
-              ? 'bg-neon-orange/15 text-neon-orange shadow-[0_0_8px_rgba(255,85,0,0.15)]'
+              ? 'bg-xo-cyan/15 text-xo-cyan shadow-[0_0_8px_rgba(85,214,255,0.16)]'
               : 'text-gray-500 hover:bg-glass-hover hover:text-gray-300'
           )}
         >
@@ -113,7 +113,7 @@ export function DateRangeFilter({ value, onChange }: DateRangeFilterProps) {
         className={cn(
           'rounded-lg px-3 py-1.5 text-xs font-medium transition-all',
           value.preset === 'custom'
-            ? 'bg-neon-orange/15 text-neon-orange'
+            ? 'bg-xo-cyan/15 text-xo-cyan'
             : 'text-gray-500 hover:bg-glass-hover hover:text-gray-300'
         )}
       >
@@ -124,7 +124,7 @@ export function DateRangeFilter({ value, onChange }: DateRangeFilterProps) {
         <div className="flex items-center gap-2">
           <input
             type="date"
-            className="rounded-lg border border-glass-border bg-black/50 px-2 py-1 text-xs text-gray-300 outline-none focus:border-neon-orange/50"
+            className="rounded-lg border border-glass-border bg-black/50 px-2 py-1 text-xs text-gray-300 outline-none focus:border-xo-cyan/50"
             value={value.from ? value.from.toISOString().split('T')[0] : ''}
             onChange={(e) => {
               const from = e.target.value ? new Date(e.target.value) : null;
@@ -134,7 +134,7 @@ export function DateRangeFilter({ value, onChange }: DateRangeFilterProps) {
           <span className="text-xs text-gray-600">–</span>
           <input
             type="date"
-            className="rounded-lg border border-glass-border bg-black/50 px-2 py-1 text-xs text-gray-300 outline-none focus:border-neon-orange/50"
+            className="rounded-lg border border-glass-border bg-black/50 px-2 py-1 text-xs text-gray-300 outline-none focus:border-xo-cyan/50"
             value={value.to ? value.to.toISOString().split('T')[0] : ''}
             onChange={(e) => {
               const to = e.target.value ? new Date(e.target.value) : null;

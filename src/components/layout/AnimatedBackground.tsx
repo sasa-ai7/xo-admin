@@ -9,7 +9,17 @@ interface XOSymbol {
   rotation: number;
   rotationSpeed: number;
   type: 'X' | 'O';
+  /** RGB triplet string, e.g. "85, 214, 255". */
+  color: string;
 }
+
+// Cyan / electric-blue / violet — violet appears least often (accent).
+const SYMBOL_PALETTE = [
+  '85, 214, 255',
+  '56, 189, 248',
+  '85, 214, 255',
+  '167, 139, 250',
+];
 
 export function AnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -23,7 +33,8 @@ export function AnimatedBackground() {
 
     let animationId: number;
     const symbols: XOSymbol[] = [];
-    const SYMBOL_COUNT = 42;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SYMBOL_COUNT = reduceMotion ? 14 : 38;
 
     function resize() {
       if (!canvas) return;
@@ -39,24 +50,25 @@ export function AnimatedBackground() {
           y: Math.random() * (canvas?.height || 1080),
           size: Math.random() * 22 + 14,
           speed: Math.random() * 0.35 + 0.12,
-          opacity: Math.random() * 0.08 + 0.03,
+          opacity: Math.random() * 0.08 + 0.022,
           rotation: Math.random() * Math.PI * 2,
           rotationSpeed: (Math.random() - 0.5) * 0.005,
           type: Math.random() > 0.5 ? 'X' : 'O',
+          color: SYMBOL_PALETTE[Math.floor(Math.random() * SYMBOL_PALETTE.length)],
         });
       }
     }
 
-    function drawX(x: number, y: number, size: number, rotation: number, opacity: number) {
+    function drawX(x: number, y: number, size: number, rotation: number, opacity: number, color: string) {
       if (!ctx) return;
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate(rotation);
-      ctx.strokeStyle = `rgba(255, 85, 0, ${opacity})`;
+      ctx.strokeStyle = `rgba(${color}, ${opacity})`;
       ctx.lineWidth = 2.2;
       ctx.lineCap = 'round';
-      ctx.shadowColor = `rgba(255, 85, 0, ${Math.min(opacity * 1.4, 0.2)})`;
-      ctx.shadowBlur = 6;
+      ctx.shadowColor = `rgba(${color}, ${Math.min(opacity * 1.55, 0.24)})`;
+      ctx.shadowBlur = 9;
       const half = size / 2;
       ctx.beginPath();
       ctx.moveTo(-half, -half);
@@ -67,15 +79,15 @@ export function AnimatedBackground() {
       ctx.restore();
     }
 
-    function drawO(x: number, y: number, size: number, rotation: number, opacity: number) {
+    function drawO(x: number, y: number, size: number, rotation: number, opacity: number, color: string) {
       if (!ctx) return;
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate(rotation);
-      ctx.strokeStyle = `rgba(255, 119, 51, ${opacity})`;
+      ctx.strokeStyle = `rgba(${color}, ${opacity})`;
       ctx.lineWidth = 2.2;
-      ctx.shadowColor = `rgba(255, 119, 51, ${Math.min(opacity * 1.3, 0.16)})`;
-      ctx.shadowBlur = 5;
+      ctx.shadowColor = `rgba(${color}, ${Math.min(opacity * 1.35, 0.2)})`;
+      ctx.shadowBlur = 8;
       ctx.beginPath();
       ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
       ctx.stroke();
@@ -88,14 +100,16 @@ export function AnimatedBackground() {
 
       for (const s of symbols) {
         if (s.type === 'X') {
-          drawX(s.x, s.y, s.size, s.rotation, s.opacity);
+          drawX(s.x, s.y, s.size, s.rotation, s.opacity, s.color);
         } else {
-          drawO(s.x, s.y, s.size, s.rotation, s.opacity);
+          drawO(s.x, s.y, s.size, s.rotation, s.opacity, s.color);
         }
 
-        s.x += Math.sin((s.y + s.rotation * 100) * 0.01) * 0.08;
-        s.y -= s.speed;
-        s.rotation += s.rotationSpeed;
+        if (!reduceMotion) {
+          s.x += Math.sin((s.y + s.rotation * 100) * 0.01) * 0.08;
+          s.y -= s.speed;
+          s.rotation += s.rotationSpeed;
+        }
 
         if (s.y < -s.size) {
           s.y = canvas.height + s.size;
@@ -103,7 +117,7 @@ export function AnimatedBackground() {
         }
       }
 
-      animationId = requestAnimationFrame(draw);
+      if (!reduceMotion) animationId = requestAnimationFrame(draw);
     }
 
     resize();
@@ -117,15 +131,30 @@ export function AnimatedBackground() {
     window.addEventListener('resize', handleResize);
 
     return () => {
-      cancelAnimationFrame(animationId);
+      if (animationId) cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-0"
-    />
+    <>
+      <div className="xo-app-bg pointer-events-none fixed inset-0 z-0" />
+      <div className="xo-bg-grid pointer-events-none fixed inset-0 z-0 opacity-60" />
+      <canvas
+        ref={canvasRef}
+        className="pointer-events-none fixed inset-0 z-0 opacity-90"
+      />
+      {/* Slow diagonal neon streaks — purely decorative, disabled for reduced motion. */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden motion-reduce:hidden">
+        <div
+          className="absolute -inset-1/4 h-1/2 w-[140%] rotate-[8deg] bg-[linear-gradient(90deg,transparent,rgba(85,214,255,0.06),transparent)] blur-2xl"
+          style={{ animation: 'xo-neon-streak 17s linear infinite' }}
+        />
+        <div
+          className="absolute -inset-1/4 h-1/2 w-[140%] rotate-[8deg] bg-[linear-gradient(90deg,transparent,rgba(167,139,250,0.05),transparent)] blur-2xl"
+          style={{ animation: 'xo-neon-streak 23s linear infinite', animationDelay: '6s' }}
+        />
+      </div>
+    </>
   );
 }
